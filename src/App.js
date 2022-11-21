@@ -1,14 +1,14 @@
 import './App.css'
 import PropTypes from 'prop-types'
-import pokemons from './pokemon.json'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 const PokemonRow = ({ pokemon, onSelect }) => (
 	<tr>
 		<td>{pokemon.name.english}</td>
 		<td>{pokemon.type.join(', ')}</td>
 		<td>
-			<button onClick={() => onSelect(pokemon)}>Select!</button>
+			<button onClick={onSelect}>Select!</button>
+			{/* <button onClick={() => onSelect(pokemon)}>Select!</button> */}
 		</td>
 	</tr>
 )
@@ -26,7 +26,6 @@ PokemonRow.propTypes = {
 const PokemonInfo = ({ name, base }) => (
 	<div>
 		<h1>{name.english}</h1>
-
 		<table width='100%'>
 			<tbody>
 				{Object.keys(base).map((key) => (
@@ -55,9 +54,16 @@ PokemonInfo.propTypes = {
 }
 
 function App() {
-	console.log(pokemons[0].base)
 	const [filter, setFilter] = useState('')
+	const [pokemon, setPokemon] = useState([])
 	const [selectedItem, setSelectedItem] = useState(null)
+
+	React.useEffect(() => {
+		fetch('http://localhost:3001/starting-react/pokemon.json')
+			.then((resp) => resp.json())
+			.then((data) => setPokemon(data))
+	}, [])
+
 	return (
 		<div
 			style={{
@@ -80,7 +86,7 @@ function App() {
 							</tr>
 						</thead>
 						<tbody>
-							{pokemons
+							{pokemon
 								.filter((pokemon) =>
 									pokemon.name.english
 										.toLowerCase()
@@ -90,7 +96,8 @@ function App() {
 									<PokemonRow
 										key={pokemon.id}
 										pokemon={pokemon}
-										onSelect={(pokemon) => setSelectedItem(pokemon)}
+										onSelect={() => setSelectedItem(pokemon)}
+										// onSelect={(pokemon) => setSelectedItem(pokemon)}
 									/>
 								))}
 						</tbody>
