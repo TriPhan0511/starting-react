@@ -19,7 +19,7 @@ function App() {
 
 	// Asynchronous request (at the mounting stage)
 	React.useEffect(() => {
-		fetch('http://localhost:3001/starting-react/pokemon.json')
+		fetch('starting-react/pokemon.json')
 			.then((resp) => resp.json())
 			.then((data) => setPokemon(data))
 	}, [])
