@@ -3,9 +3,6 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import MUI from './material-ui-sample/MUI'
-
-import AppClassComponent from './AppClassComponent'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
