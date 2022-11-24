@@ -1,5 +1,5 @@
 import './App.css'
-import React, { createContext, useState } from 'react'
+import React, { useReducer, useState } from 'react'
 import { CssBaseline } from '@mui/material'
 import {
 	Title,
@@ -7,36 +7,51 @@ import {
 	PageContainer,
 } from './components/StyledComponents'
 
-import PokemonContext from './PokemonContext'
 import PokemonInfo from './components/PokemonInfo'
 import PokemonFilter from './components/PokemonFilter'
 import PokemonTable from './components/PokemonTable'
+import PokemonContext from './PokemonContext'
+
+const pokemonReducer = (state, action) => {
+	switch (action.type) {
+		case 'SET_FILTER':
+			return { ...state, filter: action.payload }
+		case 'SET_POKEMON':
+			return { ...state, pokemon: action.payload }
+		case 'SET_SELECTED_POKEMON':
+			return { ...state, selectedPokemon: action.payload }
+		default:
+			throw new Error('No action')
+	}
+}
 
 function App() {
-	const [filter, setFilter] = useState('')
-	const [pokemon, setPokemon] = useState([])
-	const [selectedPokemon, setSelectedPokemon] = useState(null)
+	const [state, dispatch] = useReducer(pokemonReducer, {
+		filter: '',
+		pokemon: [],
+		selectedPokemon: null,
+	})
 
-	// Asynchronous request (at the mounting stage)
 	React.useEffect(() => {
-		fetch('starting-react/pokemon.json')
+		fetch('/starting-react/pokemon.json')
 			.then((resp) => resp.json())
-			.then((data) => setPokemon(data))
+			.then((data) =>
+				dispatch({
+					type: 'SET_POKEMON',
+					payload: data,
+				})
+			)
 	}, [])
 
-	if (!pokemon) {
+	if (!state.pokemon) {
 		return <div>Loading data</div>
 	}
 
 	return (
 		<PokemonContext.Provider
 			value={{
-				filter,
-				setFilter,
-				pokemon,
-				setPokemon,
-				selectedPokemon,
-				setSelectedPokemon,
+				state,
+				dispatch,
 			}}
 		>
 			<PageContainer>

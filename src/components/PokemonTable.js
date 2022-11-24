@@ -3,7 +3,10 @@ import PokemonContext from '../PokemonContext'
 import PokemonRow from './PokemonRow'
 
 const PokemonTable = () => {
-	const { filter, pokemon, setSelectedPokemon } = useContext(PokemonContext)
+	const {
+		state: { filter, pokemon },
+		dispatch,
+	} = useContext(PokemonContext)
 	return (
 		<table width='100%'>
 			<thead>
@@ -19,11 +22,7 @@ const PokemonTable = () => {
 					)
 					.slice(0, 20)
 					.map((pokemon) => (
-						<PokemonRow
-							key={pokemon.id}
-							pokemon={pokemon}
-							onClick={(p) => setSelectedPokemon(p)}
-						/>
+						<PokemonRow key={pokemon.id} pokemon={pokemon} />
 					))}
 			</tbody>
 		</table>
