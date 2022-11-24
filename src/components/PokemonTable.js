@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
-import PokemonContext from '../PokemonContext'
 import PokemonRow from './PokemonRow'
+import { useSelector, useDispatch } from 'react-redux'
 
 const PokemonTable = () => {
-	const {
-		state: { filter, pokemon },
-		dispatch,
-	} = useContext(PokemonContext)
+	const dispatch = useDispatch()
+	const pokemon = useSelector((state) => state.pokemon)
+	const filter = useSelector((state) => state.filter)
+
 	return (
 		<table width='100%'>
 			<thead>
@@ -22,7 +22,16 @@ const PokemonTable = () => {
 					)
 					.slice(0, 20)
 					.map((pokemon) => (
-						<PokemonRow key={pokemon.id} pokemon={pokemon} />
+						<PokemonRow
+							key={pokemon.id}
+							pokemon={pokemon}
+							onClick={() =>
+								dispatch({
+									type: 'SET_SELECTED_POKEMON',
+									payload: pokemon,
+								})
+							}
+						/>
 					))}
 			</tbody>
 		</table>

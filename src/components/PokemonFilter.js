@@ -1,12 +1,10 @@
-import React, { useContext } from 'react'
-import PokemonContext from '../PokemonContext'
 import { Input } from './StyledComponents'
+import { useSelector, useDispatch } from 'react-redux'
 
 const PokemonFilter = () => {
-	const {
-		state: { filter },
-		dispatch,
-	} = useContext(PokemonContext)
+	const dispatch = useDispatch()
+	const filter = useSelector((state) => state.filter)
+
 	return (
 		<Input
 			value={filter}

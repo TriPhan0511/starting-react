@@ -1,18 +1,26 @@
 import './App.css'
-import React, { useReducer, useState } from 'react'
+import React, { useReducer, useEffect } from 'react'
 import { CssBaseline } from '@mui/material'
+import { createStore } from 'redux'
+import { Provider, useSelector, useDispatch } from 'react-redux'
+
 import {
 	Title,
 	TwoColumnsLayout,
 	PageContainer,
 } from './components/StyledComponents'
-
 import PokemonInfo from './components/PokemonInfo'
 import PokemonFilter from './components/PokemonFilter'
 import PokemonTable from './components/PokemonTable'
-import PokemonContext from './PokemonContext'
 
-const pokemonReducer = (state, action) => {
+const pokemonReducer = (
+	state = {
+		filter: '',
+		pokemon: [],
+		selectedPokemon: null,
+	},
+	action
+) => {
 	switch (action.type) {
 		case 'SET_FILTER':
 			return { ...state, filter: action.payload }
@@ -21,18 +29,17 @@ const pokemonReducer = (state, action) => {
 		case 'SET_SELECTED_POKEMON':
 			return { ...state, selectedPokemon: action.payload }
 		default:
-			throw new Error('No action')
+			return state
 	}
 }
 
-function App() {
-	const [state, dispatch] = useReducer(pokemonReducer, {
-		filter: '',
-		pokemon: [],
-		selectedPokemon: null,
-	})
+const store = createStore(pokemonReducer)
 
-	React.useEffect(() => {
+function App() {
+	const dispatch = useDispatch()
+	const pokemon = useSelector((state) => state.pokemon)
+
+	useEffect(() => {
 		fetch('/starting-react/pokemon.json')
 			.then((resp) => resp.json())
 			.then((data) =>
@@ -43,30 +50,27 @@ function App() {
 			)
 	}, [])
 
-	if (!state.pokemon) {
+	if (!pokemon) {
 		return <div>Loading data</div>
 	}
 
 	return (
-		<PokemonContext.Provider
-			value={{
-				state,
-				dispatch,
-			}}
-		>
-			<PageContainer>
-				<CssBaseline />
-				<Title>Pokemon Search</Title>
-				<TwoColumnsLayout>
-					<div>
-						<PokemonFilter />
-						<PokemonTable />
-					</div>
-					{<PokemonInfo />}
-				</TwoColumnsLayout>
-			</PageContainer>
-		</PokemonContext.Provider>
+		<PageContainer>
+			<CssBaseline />
+			<Title>Pokemon Search</Title>
+			<TwoColumnsLayout>
+				<div>
+					<PokemonFilter />
+					<PokemonTable />
+				</div>
+				{<PokemonInfo />}
+			</TwoColumnsLayout>
+		</PageContainer>
 	)
 }
 
-export default App
+export default () => (
+	<Provider store={store}>
+		<App />
+	</Provider>
+)
