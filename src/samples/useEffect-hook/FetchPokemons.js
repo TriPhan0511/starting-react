@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 function FetchPokemons() {
 	const [pokemons, setPokemons] = useState([])
 	useEffect(() => {
-		const fetchData = async () => {
+		async function fetchData() {
 			const resp = await fetch('starting-react/pokemon.js')
-			const data = await resp.json()
+			const data = await resp.json(resp)
 			setPokemons(data)
 		}
 		fetchData()
