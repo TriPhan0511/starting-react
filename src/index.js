@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import Stopwatch from './samples/useRef-hook/usecase-1-2-stopwatch/Stopwatch'
-import InputFocus from './samples/useRef-hook/usecase-2-focusing-an-input/InputFocus'
+import App from './samples/useEffect-hook/RepeatMessage'
+import FetchPokemons from './samples/useEffect-hook/FetchPokemons'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
-root.render(<InputFocus />)
+root.render(<FetchPokemons />)
 
 // const root = ReactDOM.createRoot(document.getElementById('root'))
 // root.render(
