@@ -1,0 +1,17 @@
+.pageContainer {
+  max-width: 996px;
+  margin: auto;
+  text-align: center;
+}
+
+.TwoColumLayout {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  gap: 30px;
+}
+
+input {
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
