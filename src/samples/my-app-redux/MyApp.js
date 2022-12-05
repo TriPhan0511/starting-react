@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Provider, useDispatch } from 'react-redux'
+import { Provider, useDispatch, useSelector } from 'react-redux'
 import store from './store'
 
 import {
@@ -9,11 +9,12 @@ import {
 } from './components/StyledComponents'
 
 import PokemonTable from './components/PokemonTable'
+import PokemonFilter from './components/PokemonFilter'
 import PokemonInfo from './components/PokemonInfo'
 
 function MyApp() {
 	const dispatch = useDispatch()
-
+	const selectedPokemon = useSelector((state) => state.selectedPokemon)
 	useEffect(() => {
 		async function fetchPokemons() {
 			const resp = await fetch('/starting-react/pokemon.json')
@@ -25,12 +26,15 @@ function MyApp() {
 		}
 		fetchPokemons()
 	})
-
 	return (
 		<PageContainer>
 			<Title>Pokemon Search</Title>
 			<TwoColumnLayout>
-				<PokemonTable />
+				<div>
+					<PokemonFilter />
+					<PokemonTable />
+				</div>
+				{selectedPokemon && <PokemonInfo />}
 			</TwoColumnLayout>
 		</PageContainer>
 	)

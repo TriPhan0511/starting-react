@@ -1,6 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { Input } from './StyledComponents'
+
 function PokemonFilter() {
 	const dispatch = useDispatch()
 	const filter = useSelector((state) => state.filter)
